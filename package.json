@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "start:dev": "turbo run start:dev",
+    "clean": "turbo daemon clean",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "@turbo/gen": "^1.9.7",
+    "eslint": "^7.32.0",
+    "eslint-config-custom": "*",
+    "prettier": "^2.5.1",
+    "turbo": "latest"
+  },
+  "name": "rayk",
+  "packageManager": "npm@9.7.2",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

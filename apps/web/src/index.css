@@ -1,0 +1,156 @@
+@font-face {
+  font-family: Inter;
+  font-weight: 100;
+  src: url(./assets/Inter/static/Inter-Thin.ttf);
+}
+
+@font-face {
+  font-family: Inter;
+  font-weight: 200;
+  src: url(./assets/Inter/static/Inter-ExtraLight.ttf);
+}
+
+@font-face {
+  font-family: Inter;
+  font-weight: 300;
+  src: url(./assets/Inter/static/Inter-Light.ttf);
+}
+
+@font-face {
+  font-family: Inter;
+  font-weight: 400;
+  src: url(./assets/Inter/static/Inter-Regular.ttf);
+}
+
+@font-face {
+  font-family: Inter;
+  font-weight: 500;
+  src: url(./assets/Inter/static/Inter-Medium.ttf);
+}
+
+@font-face {
+  font-family: Inter;
+  font-weight: 600;
+  src: url(./assets/Inter/static/Inter-SemiBold.ttf);
+}
+
+@font-face {
+  font-family: Inter;
+  font-weight: 700;
+  src: url(./assets/Inter/static/Inter-Bold.ttf);
+}
+
+@font-face {
+  font-family: Inter;
+  font-weight: 800;
+  src: url(./assets/Inter/static/Inter-ExtraBold.ttf);
+}
+
+@font-face {
+  font-family: Inter;
+  font-weight: 900;
+  src: url(./assets/Inter/static/Inter-Black.ttf);
+}
+
+:root {
+  --primary-bg: #17202A;
+  --container-bg: #212F3D; /* Used for containers/uninteractables (i.e. Header boxes) */
+  --interactable-bg: #283747; /* Used for interactables (i.e. Buttons, Text boxes, etc.) */
+  --content-bg: #1C2833; /* Used for user content areas (i.e. Thoughts, Bios, etc.) */
+
+  --primary-color: white;
+  --unimportant-color: #808B96; /* Used for unimportant text (i.e. Subtext, Edit indicators, etc.) */
+
+  --general-color: #5499C7;
+  --general-color-dim: #2980b9;
+  --general-color-dark: #2471a3;
+  --success-color: #27AE60;
+  --warning-color: #F1C40F;
+  --danger-color: #E74C3C;
+
+  --content-width: 490px;
+}
+
+* {
+  font-family: Inter;
+  color: var(--primary-color);
+
+  -moz-box-sizing: border-box; 
+  -webkit-box-sizing: border-box; 
+  box-sizing: border-box; 
+}
+
+body {
+  margin: 0;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+}
+
+p {
+  font-size: 15px;
+}
+
+a {
+  color: var(--general-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+/* ### Forms ### */
+
+
+input {
+  height: 40px;
+
+  padding-left: 10px;
+  padding-right: 10px;
+
+  background-color: var(--interactable-bg);
+  border: none;
+  border-radius: 6px;
+
+  font-weight: 600;
+  font-size: 14px;
+
+  color: var(--primary-color);
+}
+
+input:focus {
+  outline: var(--general-color) solid 2px;
+}
+
+button {
+  height: 35px;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  background-color: var(--general-color);
+  border: none;
+  border-radius: 6px;
+
+  font-weight: 700;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition: all 0.2s;
+}
+
+button:hover {
+  background-color: var(--general-color-dim);
+}
+
+button:active {
+  background-color: var(--general-color-dark);
+}

@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// ### Models ###
+
+model AccessKey {
+  key String @id @default(uuid())
+}
+
+model User {
+  username String @unique
+  email    String @unique
+  id       String @id
+
+  joined DateTime @default(now())
+
+  profile Profile?
+
+  roles RoleBinding[]
+  permissions String[]
+
+  bubbles Bubble[] @relation(name: "bubble_binding")
+  starred StarBinding[] @relation(name: "star_binding")
+
+  sessions Session[]
+
+  @@map("users")
+}
+
+model Profile {
+  visibility ProfileVisibility @default(PRIVATE)
+  bio String?
+  country String?
+  pronouns String?
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @unique
+
+  pinned Bubble? @relation(fields: [pinned_id], references: [id])
+  pinned_id String? @unique
+
+  @@map("profiles")
+}
+
+model Role {
+  name String @id
+  permissions String[]
+
+  members RoleBinding[]
+
+  @@map("roles")
+}
+
+model Session {
+  token String @id
+  expires DateTime
+  ip String
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String
+
+  @@map("sessions")
+}
+
+model Bubble {
+  id String @id
+  url String @unique
+
+  created DateTime @default(now())
+
+  visibility BubbleVisibility @default(PUBLIC)
+
+  user User @relation(name: "bubble_binding", fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String
+
+  pinned_on Profile?
+
+  stars StarBinding[] @relation(name: "star_binding")
+
+  thoughts Thought[]
+
+  @@map("bubbles")
+}
+
+model Thought {
+  id String @id
+  created DateTime @default(now())
+  edited DateTime @updatedAt
+  visibility ThoughtVisibility @default(PUBLIC)
+
+  body String
+
+  bubble Bubble @relation(fields: [bubble_id], references: [id], onDelete: Cascade)
+  bubble_id String
+
+  replies Thought[] @relation(name: "reply_binding")
+
+  parent Thought? @relation(name: "reply_binding", fields: [parent_id], references: [id], onDelete: Cascade)
+  parent_id String?
+
+  @@map("thoughts")
+}
+
+
+// model Changelog {
+//   id String @id
+//   created DateTime @default(now())
+//   content String
+// }
+
+
+// ### Bindings ### (Many-To-Many)
+
+model RoleBinding {
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String
+
+  role Role @relation(fields: [role_name], references: [name], onDelete: Cascade)
+  role_name String
+
+  assigned DateTime @default(now())
+
+  @@id([user_id, role_name])
+  @@map("role_bindings")
+}
+
+model StarBinding {
+  user User @relation(name: "star_binding", fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String
+
+  bubble Bubble @relation(name: "star_binding", fields: [bubble_id], references: [id], onDelete: Cascade)
+  bubble_id String
+
+  starred DateTime @default(now())
+
+  @@id([user_id, bubble_id])
+  @@map("star_bindings")
+}
+
+
+// ### Enums ###
+
+enum ProfileVisibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum ThoughtVisibility {
+  PUBLIC
+  UNLISTED
+  PRIVATE
+}
+
+enum BubbleVisibility {
+  PUBLIC
+  UNLISTED
+  ANON
+  PRIVATE
+}

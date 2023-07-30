@@ -1,0 +1,37 @@
+.textarea {
+  position: relative;
+  min-height: 65px;
+  max-height: 400px;
+
+  padding: 12px;
+
+  background-color: var(--interactable-bg);
+  border: none;
+  border-radius: 6px;
+
+  font-weight: 400;
+  font-size: 14px;
+
+  color: var(--primary-color);
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  word-wrap: break-word;
+
+  text-align: start;
+
+  scrollbar-width: none;
+}
+
+.textarea:empty:before {
+  content: attr(data-text);
+  color: var(--unimportant-color)
+}
+
+.textarea::-webkit-scrollbar {
+  display: none;
+}
+
+.textarea:focus {
+  outline: var(--general-color) solid 2px;
+}

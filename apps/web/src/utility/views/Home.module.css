@@ -1,0 +1,51 @@
+.header {
+  width: var(--content-width);
+  
+  display: table;
+  flex-direction: row;
+}
+
+.header * {
+  margin: 0;
+}
+
+.header > *:first-child {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+
+  float: left;
+}
+
+.header > *:first-child > * {
+  margin-right: 5px;
+}
+
+.header > *:last-child {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+
+  float: right;
+}
+
+.header > *:last-child > * {
+  margin-left: 10px;
+}
+
+.mainContent {
+  width: var(--content-width);
+
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.mainContent > .textarea {
+  width: 90%;
+  min-height: 65px;
+  max-height: 400px;
+}
+
+.footer {
+  width: var(--content-width);
+}
