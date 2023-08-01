@@ -43,7 +43,7 @@ export class EmailService {
         p.startsWith("email=") && 
         EmailRegex.test( p.split("=")[1] )
       )
-      ?.split("=")[1] || undefined,
+      ?.split("=")[1].toLowerCase() || undefined,
 
       code: split.find(p => p.startsWith("code="))?.split("=")[1] || undefined
     }
@@ -68,7 +68,7 @@ export class EmailService {
     const eidDataMap = this.register.get(email);
     if (!eidDataMap) throw new Error("Failed to create EID");
 
-    const isUser = !!await UserService.GetUser({ where: { email } });
+    const isUser = !!await UserService.FindUser({ where: { email } });
 
     const eidTTL = 600000; // 10 Minutes
     const data: EidData = {

@@ -16,7 +16,7 @@ const EIDMiddleware = function (level: EidLevel) {
         eid: {
           email,
           code,
-          isUser: !!await UserService.GetUser({ where: { email } })
+          isUser: !!await UserService.FindUser({ where: { email } })
         }
       }
     })

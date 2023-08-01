@@ -18,7 +18,7 @@ interface IEnv {
 const env: IEnv = {
   NODE_ENV: getVariable<string>('NODE_ENV', true),
 
-  PORT: getVariable<number>('PORT') || 5656,
+  PORT: /*getVariable<number>('PORT') ||*/ 5656,
   DATABASE_URL: getVariable<string>('DATABASE_URL', true),
 
   AUTH_SECRET: getVariable<string>('AUTH_SECRET', true),

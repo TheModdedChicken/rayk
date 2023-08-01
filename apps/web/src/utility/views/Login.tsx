@@ -1,19 +1,23 @@
-import { createSignal, type Component, Switch, Match } from 'solid-js';
+import { createSignal, type Component, Switch, Match, createEffect } from 'solid-js';
 
 import styles from './Login.module.css';
-import FeatherIcon, { FeatherIcons } from '../elements/FeatherIcon';
-import { A } from '@solidjs/router';
+import FeatherIcon, { FeatherIcons } from '../components/FeatherIcon';
+import { A, useNavigate, useSearchParams } from '@solidjs/router';
 import { Show } from 'solid-js/web';
 import { SetEIDHeader, trpc } from '../trpc';
 import { useSessionProvider } from '../providers/SessionProvider';
 
 const LoginView: Component = () => {
-  const { setSession } = useSessionProvider();
+  const [ params ] = useSearchParams();
+  const navigate = useNavigate();
+  const { setSession, user } = useSessionProvider();
 
   const [ screen, setScreen ] = createSignal<'info' | 'verify'>('info');
   const [ infoMessage, setInfoMessage ] = createSignal<string | false>(false);
 
   const [ email, setEmail ] = createSignal<string>('');
+
+  const ref = params.ref;
 
   return (
     <div class={styles.login_container}>
@@ -45,7 +49,7 @@ const LoginView: Component = () => {
             </Show>
             <button>Login</button>
           </form>
-          <A href='/signup'>Switch to Signup</A>
+          <A href={`/signup${ref ? '?ref=' + ref : ''}`}>Switch to Signup</A>
 
         </Match>
 
@@ -61,6 +65,7 @@ const LoginView: Component = () => {
             
             setSession(loginData.token);
             setInfoMessage('Successfully logged in! Redirecting...');
+            navigate(ref || '/home');
           }}>
             <input type='text' required={true} name='code' id="login_code" placeholder='Code'/>
             <Show when={infoMessage()}>

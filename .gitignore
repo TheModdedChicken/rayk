@@ -35,3 +35,6 @@ TURBO.md
 
 # vercel
 .vercel
+
+# NPM
+package-lock.json

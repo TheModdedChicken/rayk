@@ -1,0 +1,51 @@
+.context_menu {
+  position: absolute;
+  z-index: 2;
+
+  min-width: 10px;
+  height: fit-content;
+
+  background-color: var(--interactable-bg);
+
+  border: 3px solid var(--border-color);
+  border-radius: 6px;
+
+  user-select: none;
+}
+
+.context_menu > *:first-child {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+
+.context_menu > *:last-child {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+
+.context_menu_option {
+  width: 100%;
+
+  padding: 8px 10px;
+
+  font-weight: 500;
+  font-size: 14px;
+
+  cursor: pointer;
+}
+
+.context_menu_option:hover {
+  background-color: var(--interactable-bg-light);
+}
+
+.context_menu_option:active {
+  background-color: var(--interactable-bg-bright);
+}
+
+.context_menu_option_danger {
+  color: var(--danger-color);
+}
+
+.context_menu_center {
+  text-align: center;
+}

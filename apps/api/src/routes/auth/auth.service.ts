@@ -60,6 +60,14 @@ namespace AuthService {
   export async function DeleteSession (where: DB.Prisma.SessionWhereUniqueInput): Promise<DB.Session> {
     return await prisma.session.delete({ where });
   }
+
+  export function VerifyToken (token: string) {
+    try {
+      return jwt.verify(token, env.AUTH_SECRET) as jwt.JwtPayload & { id: string, ip: string };
+    } catch {
+      return null;
+    }
+  }
 }
 
 export default AuthService

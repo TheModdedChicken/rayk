@@ -1,6 +1,6 @@
 .textarea {
   position: relative;
-  min-height: 65px;
+  min-height: 75px;
   max-height: 400px;
 
   padding: 12px;
@@ -23,9 +23,12 @@
   scrollbar-width: none;
 }
 
-.textarea:empty:before {
+.textarea:empty:not(:focus):before {
   content: attr(data-text);
-  color: var(--unimportant-color)
+  color: var(--unimportant-color);
+  cursor: text;
+  margin-left: 10px;
+  line-height: 45px;
 }
 
 .textarea::-webkit-scrollbar {

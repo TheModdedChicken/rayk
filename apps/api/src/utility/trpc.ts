@@ -1,9 +1,10 @@
 import { TRPCError, inferAsyncReturnType, initTRPC } from '@trpc/server';
 import requestIp from 'request-ip';
-import { CreateHTTPContextOptions } from '@trpc/server/adapters/standalone';
+import * as trpcExpress from '@trpc/server/adapters/express';
 import { EmailService } from './email';
+import cors from 'cors';
 
-export async function createContext({ req, res }: CreateHTTPContextOptions) {
+export async function createContext({ req, res }: trpcExpress.CreateExpressContextOptions) {
   function getIP () {
     const ip = requestIp.getClientIp(req);
     if (!ip) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: "Couldn't retrieve IP address" })
@@ -11,6 +12,9 @@ export async function createContext({ req, res }: CreateHTTPContextOptions) {
   }
 
   return {
+    request: req,
+    response: res,
+    authorization: req.headers.authorization,
     eid: EmailService.ParseEidHeader(req.headers['eid'] as (string | undefined) || ''),
     ip: getIP()
   }
@@ -31,3 +35,9 @@ const t = initTRPC.context<Context>().create();
 export const router = t.router;
 export const middleware = t.middleware;
 export const defaultProcedure = t.procedure;
+
+
+// .use((opts) => {
+//   cors({ origin: '*' })(opts.ctx.request, opts.ctx.response, () => {});
+//   return opts.next();
+// });

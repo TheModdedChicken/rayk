@@ -34,24 +34,3 @@
 .right_float > * {
   margin-left: 10px;
 }
-
-.mainContent {
-  width: var(--content-width);
-
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-.mainContent > .textarea {
-  width: 90%;
-  min-height: 65px;
-  max-height: 400px;
-}
-
-.footer {
-  width: var(--content-width);
-}
-
-.send_button {
-  rotate: 45deg;
-}

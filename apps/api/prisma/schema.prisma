@@ -71,7 +71,7 @@ model Session {
 
 model Bubble {
   id String @id
-  url String @unique
+  name String @unique
 
   created DateTime @default(now())
 

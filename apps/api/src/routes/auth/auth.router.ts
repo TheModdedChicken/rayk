@@ -6,6 +6,7 @@ import EIDMiddleware from "../../utility/middleware/eid";
 import { TRPCError } from "@trpc/server";
 import { UsernameRegex } from "../../utility/regex";
 import UserService from "../users/user.service";
+import AuthMiddleware from "../../utility/middleware/auth";
 
 
 export const authRouter = router({
@@ -20,7 +21,7 @@ export const authRouter = router({
   }),
 
   eid: defaultProcedure
-  .input(z.object({ email: z.string().email(), level: z.number().min(1).max(2) }))
+  .input(z.object({ email: z.string().email().toLowerCase(), level: z.number().min(1).max(2) }))
   .query(async ({ input: { email, level } }) => {
     const eid_data = await EmailService.CreateEid(email, level);
     if (!eid_data) throw new Error("Failed to create EID")
@@ -41,7 +42,16 @@ export const authRouter = router({
 
     if (!await AuthService.GetAccessKey({ where: { key } })) throw new TRPCError({ code: 'UNAUTHORIZED', message: "Invalid access key" });
     if (isUser) throw new TRPCError({ code: 'CONFLICT', message: "Email is taken" });
-    if (await UserService.GetUser({ where: { username } })) throw new TRPCError({ code: 'CONFLICT', message: "Username is taken" });
+    if (
+      await UserService.FindFirstUser({ 
+        where: { 
+          username: {
+            equals: username,
+            mode: 'insensitive'
+          }
+        }
+      })
+    ) throw new TRPCError({ code: 'CONFLICT', message: "Username is taken" });
 
     const user = await UserService.CreateUser({
       email,
@@ -66,7 +76,7 @@ export const authRouter = router({
   .mutation(async (opts) => {
     const { eid: { email }, ip } = opts.ctx;
 
-    const user = await UserService.GetUser({ where: { email }, include: { sessions: true } });
+    const user = await UserService.FindUser({ where: { email }, include: { sessions: true } });
     if (!user) throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid credentials' });
 
     if (user.sessions.length >= 5) await AuthService.DeleteSession({ token: user.sessions[0].token });
@@ -74,5 +84,11 @@ export const authRouter = router({
     const token = await AuthService.CreateSession(user.id, ip);
 
     return { token };
+  }),
+
+  logout: defaultProcedure.use(AuthMiddleware(true))
+  .mutation(async (opts) => {
+    await AuthService.DeleteSession({ token: opts.ctx.authorization });
+    return;
   })
 })
